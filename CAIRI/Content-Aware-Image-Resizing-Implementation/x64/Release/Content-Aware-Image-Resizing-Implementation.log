@@ -1,10 +1,8 @@
 ﻿  Content-Aware-Image-Resizing-Implementation.cpp
-F:\GitHub Repositories\Content-Aware-Image-Resizing-Implementation\CAIRI\Content-Aware-Image-Resizing-Implementation\Content-Aware-Image-Resizing-Implementation.cpp(106,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-F:\GitHub Repositories\Content-Aware-Image-Resizing-Implementation\CAIRI\Content-Aware-Image-Resizing-Implementation\Content-Aware-Image-Resizing-Implementation.cpp(311,30): warning C4018: '<': signed/unsigned mismatch
-F:\GitHub Repositories\Content-Aware-Image-Resizing-Implementation\CAIRI\Content-Aware-Image-Resizing-Implementation\Content-Aware-Image-Resizing-Implementation.cpp(311,65): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Abelson\Desktop\Files\GitHub\Content-Aware-Image-Resizing-Implementation\CAIRI\Content-Aware-Image-Resizing-Implementation\Content-Aware-Image-Resizing-Implementation.cpp(106,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Generating code
-  1 of 263 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+  0 of 264 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Content-Aware-Image-Resizing-Implementation.vcxproj -> F:\GitHub Repositories\Content-Aware-Image-Resizing-Implementation\CAIRI\x64\Release\Content-Aware-Image-Resizing-Implementation.exe
+  Content-Aware-Image-Resizing-Implementation.vcxproj -> C:\Users\Abelson\Desktop\Files\GitHub\Content-Aware-Image-Resizing-Implementation\CAIRI\x64\Release\Content-Aware-Image-Resizing-Implementation.exe

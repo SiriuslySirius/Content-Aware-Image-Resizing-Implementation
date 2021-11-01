@@ -12,8 +12,8 @@
 using namespace cv;
 using namespace std;
 
-uint resize_rows;
-uint resize_cols;
+int resize_rows;
+int resize_cols;
 bool demo = false;
 
 enum SeamDirection { VERTICAL, HORIZONTAL };
@@ -53,7 +53,7 @@ Mat createEnergyImage(Mat& image) {
 		// Create and show the energy image
 		namedWindow("Energy Image", WINDOW_AUTOSIZE);
 		imshow("Energy Image", energy_image);
-		uchar response = (uchar)waitKey(0);
+        waitKey(1);
 	}
 
     return energy_image;
@@ -109,7 +109,7 @@ Mat createCumulativeEnergyMap(Mat& energy_image, SeamDirection seam_direction) {
 
         namedWindow("Cumulative Energy Map", WINDOW_AUTOSIZE); 
         imshow("Cumulative Energy Map", color_cumulative_energy_map);
-        uchar response = (uchar)waitKey(0);
+        waitKey(1);
     }
 
     return cumulative_energy_map;
@@ -260,7 +260,7 @@ void reduce(Mat& image, vector<int> path, SeamDirection seam_direction) {
     if (demo) {
         namedWindow("Reduced Image", WINDOW_AUTOSIZE); 
         imshow("Reduced Image", image);
-        uchar response = (uchar)waitKey(0);
+        waitKey(1);
     }
 }
 
@@ -280,7 +280,7 @@ void showPath(Mat& energy_image, vector<int> path, SeamDirection seam_direction)
     // display the seam on top of the energy image
     namedWindow("Seam on Energy Image", WINDOW_AUTOSIZE); 
     imshow("Seam on Energy Image", energy_image);
-    uchar response = (uchar)waitKey(0);
+    waitKey(1);
 }
 
 int main(int argc, const char** argv) {
@@ -301,8 +301,8 @@ int main(int argc, const char** argv) {
 			demo = parser.get<bool>("demo");
 		}
 
-        resize_cols = parser.get<uint>(0);
-		resize_rows = parser.get<uint>(1);
+        resize_cols = parser.get<int>(0);
+		resize_rows = parser.get<int>(1);
 		string image_path = parser.get<string>(2);
 
 		Mat img = imread(image_path);
@@ -320,16 +320,20 @@ int main(int argc, const char** argv) {
             return 0;
         }
         else {
+            namedWindow("Original Image", WINDOW_AUTOSIZE); 
+            imshow("Original Image", img);
+            waitKey(1);
+
             // Setting up vector of Seam Directions for two-way seam carving
             vector<SeamDirection> seam_dir_vect;
 
             if (img.size().width >= img.size().height) {
-                seam_dir_vect.push_back(HORIZONTAL);
                 seam_dir_vect.push_back(VERTICAL);
+                seam_dir_vect.push_back(HORIZONTAL);
             }
             else if (img.size().width <= img.size().height) {
-                seam_dir_vect.push_back(VERTICAL);
                 seam_dir_vect.push_back(HORIZONTAL);
+                seam_dir_vect.push_back(VERTICAL);
             }
 
 
@@ -344,16 +348,15 @@ int main(int argc, const char** argv) {
             // Loop for doing two-direction seam carving
             Mat current_img = img;
             for (int i = 0; i < seam_dir_vect.size(); i++) {
-                cout << seam_dir_vect[i] << "\n";
                 int iterations = 1;
 
-                if (seam_dir_vect[i] == HORIZONTAL) {
+                if (seam_dir_vect[i] == VERTICAL) {
                     iterations = current_img.size().width - resize_cols;
                     cout << "Horizontal Iterations: " << iterations << "\n";
                     cout << current_img.size().width << "\n";
                     cout << resize_cols << "\n";
                 }
-                else if (seam_dir_vect[i] == VERTICAL) {
+                else if (seam_dir_vect[i] == HORIZONTAL) {
                     iterations = current_img.size().height - resize_rows;
                     cout << "Vertical Iterations: " << iterations << "\n";
                     cout << current_img.size().height << "\n";
@@ -370,6 +373,10 @@ int main(int argc, const char** argv) {
 
                     // Delete Seams
                     reduce(current_img, path, seam_dir_vect[i]);
+
+                    if (demo) {
+                        showPath(e_img, path, seam_dir_vect[i]);
+                    }
                 }
             }
 
