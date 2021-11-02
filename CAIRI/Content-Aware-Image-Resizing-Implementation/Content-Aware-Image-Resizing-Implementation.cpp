@@ -375,7 +375,7 @@ int main(int argc, const char** argv) {
                 seam_dir_vect.push_back(VERTICAL);
                 seam_dir_vect.push_back(HORIZONTAL);
             }
-            else if (img.size().width <= img.size().height) 
+            else if (img.size().width < img.size().height) 
             {
                 seam_dir_vect.push_back(HORIZONTAL);
                 seam_dir_vect.push_back(VERTICAL);
@@ -384,12 +384,12 @@ int main(int argc, const char** argv) {
 
             if (img.size().width == resize_cols) 
             {
-                seam_dir_vect.erase(remove(seam_dir_vect.begin(), seam_dir_vect.end(), HORIZONTAL), seam_dir_vect.end());
+                seam_dir_vect.erase(remove(seam_dir_vect.begin(), seam_dir_vect.end(), VERTICAL), seam_dir_vect.end());
             }
 
             if (img.size().height == resize_rows) 
             {
-                seam_dir_vect.erase(remove(seam_dir_vect.begin(), seam_dir_vect.end(), VERTICAL), seam_dir_vect.end());
+                seam_dir_vect.erase(remove(seam_dir_vect.begin(), seam_dir_vect.end(), HORIZONTAL), seam_dir_vect.end());
             }
 
             // Loop for doing two-direction seam carving
@@ -415,7 +415,7 @@ int main(int argc, const char** argv) {
 
                     // Get energy version of image
                     Mat e_img = createEnergyImage(current_img);
-                    e_img_vect.push_back(e_img);
+                    e_img_vect.push_back(e_img.clone());
 
                     // Get energy cumululation map of image
                     Mat cum_e_map = createCumulativeEnergyMap(e_img, seam_dir_vect[i]);
@@ -425,7 +425,7 @@ int main(int argc, const char** argv) {
 
                     // Delete Seams
                     Mat reduce_img = reduce(current_img, path, seam_dir_vect[i]);
-                    red_img_vect.push_back(current_img);
+                    red_img_vect.push_back(current_img.clone());
 
                     // Show seam paths
                     Mat reduce_img_path = showPath(e_img, path, seam_dir_vect[i]);
