@@ -5,5 +5,4 @@ const std::string keys =
 	"{@c||<uint> Number of pixel columns on you want to resize image to}"
 	"{@r||<uint> Number of pixel rows you want to resize image to}"
 	"{@image|<none>|<string> Filepath of image input}"
-	"{demo d|false|<bool> Shows demo; default: false}"
 	;
