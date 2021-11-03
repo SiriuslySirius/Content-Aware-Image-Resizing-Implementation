@@ -1,3 +1,17 @@
+/******************************************************************************
+
+    ECU CSCI 4150 DIP/CV Fall 2021 Group Programming Assignment 2
+    Contributors: Abelson Abueg and Brandon Miranda
+
+    Credit to David Xiao (https://github.com/davidshower/seam-carving) 
+    for the general algorithmic functions for Seam Carving.
+
+    Our contribution is in making the program be able to run both vertical and
+    horizontal seam carving  instead of doing one or the other and implimented 
+    a slider to preview every step of the seam carving process.
+
+ *****************************************************************************/
+
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
@@ -15,16 +29,17 @@ using namespace std;
 int resize_rows;
 int resize_cols;
 
-// Variables for storing the max vector size and index
+// Variables for storing the max vector size and index for slider.
 int max_vect_size = 0;
 int vect_index = 0;
 
+// Type for Seam Direction
 enum SeamDirection { VERTICAL, HORIZONTAL };
 
-// Create Vectors for Storing Data for Slider Preview
+// Create ectors for storing data for slider preview
 vector<Mat> e_img_vect, red_img_vect, seam_prev_vect;
 
-// Create Vectors for Storing Seam Direction for Slider Preview
+// Create vector for Storing Seam Direction for slider Preview
 vector<SeamDirection> vect_seam_dirs;
 
 Mat createEnergyImage(Mat& image) 
@@ -71,18 +86,19 @@ Mat createCumulativeEnergyMap(Mat& energy_image, SeamDirection seam_direction)
 {
     double a, b, c;
 
-    // get the numbers of rows and columns in the image
+    // Get the numbers of rows and columns in the image
     int rowsize = energy_image.rows;
     int colsize = energy_image.cols;
 
-    // initialize the map with zeros
+    // Initialize the map with zeros
     Mat cumulative_energy_map = Mat(rowsize, colsize, CV_64F, double(0));
 
-    // copy the first row
+    // Copy the first row
     if (seam_direction == VERTICAL) energy_image.row(0).copyTo(cumulative_energy_map.row(0));
     else if (seam_direction == HORIZONTAL) energy_image.col(0).copyTo(cumulative_energy_map.col(0));
 
-    // take the minimum of the three neighbors and add to total, this creates a running sum which is used to determine the lowest energy path
+    // Take the minimum of the three neighbors and add to total, this creates a running sum which is used to 
+    // determine the lowest energy path
     if (seam_direction == VERTICAL) 
     {
         for (int row = 1; row < rowsize; row++) 
@@ -112,6 +128,7 @@ Mat createCumulativeEnergyMap(Mat& energy_image, SeamDirection seam_direction)
         }
     }
 
+    // Create colormap version for preview
     Mat color_cumulative_energy_map;
     
     double Cmin;
@@ -136,24 +153,25 @@ vector<int> findOptimalSeam(Mat& cumulative_energy_map, SeamDirection seam_direc
     double min_val, max_val;
     Point min_pt, max_pt;
 
-    // get the number of rows and columns in the cumulative energy map
+    // Get the number of rows and columns in the cumulative energy map
     int rowsize = cumulative_energy_map.rows;
     int colsize = cumulative_energy_map.cols;
 
     if (seam_direction == VERTICAL) 
     {
-        // copy the data from the last row of the cumulative energy map
+        // Copy the data from the last row of the cumulative energy map
         Mat row = cumulative_energy_map.row(rowsize - 1);
 
-        // get min and max values and locations
+        // Get min and max values and locations
         minMaxLoc(row, &min_val, &max_val, &min_pt, &max_pt);
 
-        // initialize the path vector
+        // Initialize the path vector
         path.resize(rowsize);
         int min_index = min_pt.x;
         path[--rowsize] = min_index;
 
-        // starting from the bottom, look at the three adjacent pixels above current pixel, choose the minimum of those and add to the path
+        // Starting from the bottom, look at the three adjacent pixels above current pixel, 
+        // choose the minimum of those and add to the path
         for (int i = rowsize - 2; i >= 0; i--) 
         {
             a = cumulative_energy_map.at<double>(i, max(min_index - 1, 0));
@@ -181,18 +199,19 @@ vector<int> findOptimalSeam(Mat& cumulative_energy_map, SeamDirection seam_direc
     }
     else if (seam_direction == HORIZONTAL) 
     {
-        // copy the data from the last column of the cumulative energy map
+        // Copy the data from the last column of the cumulative energy map
         Mat col = cumulative_energy_map.col(colsize - 1);
 
-        // get min and max values and locations
+        // Get min and max values and locations
         minMaxLoc(col, &min_val, &max_val, &min_pt, &max_pt);
 
-        // initialize the path vector
+        // Initialize the path vector
         path.resize(colsize);
         int min_index = min_pt.y;
         path[--colsize] = min_index;
 
-        // starting from the right, look at the three adjacent pixels to the left of current pixel, choose the minimum of those and add to the path
+        // Starting from the right, look at the three adjacent pixels to the left of current pixel, 
+        // choose the minimum of those and add to the path
         for (int i = colsize - 2; i >= 0; i--) 
         {
             a = cumulative_energy_map.at<double>(max(min_index - 1, 0), i);
@@ -222,23 +241,23 @@ vector<int> findOptimalSeam(Mat& cumulative_energy_map, SeamDirection seam_direc
 
 Mat reduce(Mat& image, vector<int> path, SeamDirection seam_direction) 
 {
-    // get the number of rows and columns in the image
+    // Get the number of rows and columns in the image
     int rowsize = image.rows;
     int colsize = image.cols;
 
-    // create a 1x1x3 dummy matrix to add onto the tail of a new row to maintain image dimensions and mark for deletion
+    // Create a 1x1x3 dummy matrix to add onto the tail of a new row to maintain image dimensions and mark for deletion
     Mat dummy(1, 1, CV_8UC3, Vec3b(0, 0, 0));
 
     if (seam_direction == VERTICAL)  // reduce the width
     {
         for (int i = 0; i < rowsize; i++) 
         {
-            // take all pixels to the left and right of marked pixel and store them in appropriate subrow variables
+            // Take all pixels to the left and right of marked pixel and store them in appropriate subrow variables
             Mat new_row;
             Mat lower = image.rowRange(i, i + 1).colRange(0, path[i]);
             Mat upper = image.rowRange(i, i + 1).colRange(path[i] + 1, colsize);
 
-            // merge the two subrows and dummy matrix/pixel into a full row
+            // Merge the two subrows and dummy matrix/pixel into a full row
             if (!lower.empty() && !upper.empty()) 
             {
                 hconcat(lower, upper, new_row);
@@ -255,22 +274,22 @@ Mat reduce(Mat& image, vector<int> path, SeamDirection seam_direction)
                     hconcat(lower, dummy, new_row);
                 }
             }
-            // take the newly formed row and place it into the original image
+            // Take the newly formed row and place it into the original image
             new_row.copyTo(image.row(i));
         }
-        // clip the right-most side of the image
+        // Clip the right-most side of the image
         image = image.colRange(0, colsize - 1);
     }
-    else if (seam_direction == HORIZONTAL) // reduce the height
+    else if (seam_direction == HORIZONTAL) // Reduce the height
     { 
         for (int i = 0; i < colsize; i++) 
         {
-            // take all pixels to the top and bottom of marked pixel and store the in appropriate subcolumn variables
+            // Take all pixels to the top and bottom of marked pixel and store the in appropriate subcolumn variables
             Mat new_col;
             Mat lower = image.colRange(i, i + 1).rowRange(0, path[i]);
             Mat upper = image.colRange(i, i + 1).rowRange(path[i] + 1, rowsize);
 
-            // merge the two subcolumns and dummy matrix/pixel into a full row
+            // Merge the two subcolumns and dummy matrix/pixel into a full row
             if (!lower.empty() && !upper.empty()) 
             {
                 vconcat(lower, upper, new_col);
@@ -287,10 +306,10 @@ Mat reduce(Mat& image, vector<int> path, SeamDirection seam_direction)
                     vconcat(lower, dummy, new_col);
                 }
             }
-            // take the newly formed column and place it into the original image
+            // Take the newly formed column and place it into the original image
             new_col.copyTo(image.col(i));
         }
-        // clip the bottom-most side of the image
+        // Clip the bottom-most side of the image
         image = image.rowRange(0, rowsize - 1);
     }
 
@@ -304,7 +323,7 @@ Mat reduce(Mat& image, vector<int> path, SeamDirection seam_direction)
 
 Mat showPath(Mat& energy_image, vector<int> path, SeamDirection seam_direction) 
 {
-    // loop through the image and change all pixels in the path to white
+    // Loop through the image and change all pixels in the path to white
     if (seam_direction == VERTICAL) 
     {
         for (int i = 0; i < energy_image.rows; i++) 
@@ -396,7 +415,7 @@ int main(int argc, const char** argv) {
             Mat current_img = img;
             for (int i = 0; i < seam_dir_vect.size(); i++) 
             {
-                int iterations = 1;
+                int iterations = 0;
 
                 if (seam_dir_vect[i] == VERTICAL) 
                 {
@@ -411,11 +430,17 @@ int main(int argc, const char** argv) {
 
                 for (int j = 0; j < iterations; j++) 
                 {
+                    // This needs to be n-1 for last index.
+                    if (vect_index < max_vect_size - 1)
+                        vect_index++;
+
+                    // Get seam direction and put it in a vector for slider preview
                     vect_seam_dirs.push_back(seam_dir_vect[i]);
 
                     // Get energy version of image
                     Mat e_img = createEnergyImage(current_img);
-                    e_img_vect.push_back(e_img.clone());
+                    // Get energy image and put it in a vector for slider preview
+                    e_img_vect.push_back(e_img.clone()); // Clone to preserve original
 
                     // Get energy cumululation map of image
                     Mat cum_e_map = createCumulativeEnergyMap(e_img, seam_dir_vect[i]);
@@ -425,20 +450,24 @@ int main(int argc, const char** argv) {
 
                     // Delete Seams
                     Mat reduce_img = reduce(current_img, path, seam_dir_vect[i]);
+                    // Get reduced image and put it in a vector for slider preview
                     red_img_vect.push_back(current_img.clone());
 
                     // Show seam paths
                     Mat reduce_img_path = showPath(e_img, path, seam_dir_vect[i]);
+                    // Get seam path on energy image and put it in a vector for slider preview
                     seam_prev_vect.push_back(reduce_img_path);
-
-                    vect_index++;
                 }
             }
-            vect_index--;
+
+            // Window for slider.
             namedWindow("Frame Slider", WINDOW_AUTOSIZE);
             createTrackbar("Index", "Frame Slider", NULL, (max_vect_size - 1), 0);
             setTrackbarPos("Index", "Frame Slider", vect_index);
+
             cout << "\nPress ESC to end program.\n";
+            
+            // Loop for user to interact with slider.
             while (true) {
                 int ind = getTrackbarPos("Index", "Frame Slider");
                 imshow("Energy Image", e_img_vect[ind]);
@@ -449,7 +478,8 @@ int main(int argc, const char** argv) {
                 int response = waitKey(1);
                 if (response == 27)
                 {
-                    cout << "Program closed.\n";
+                    destroyAllWindows();
+                    cout << "Program closed.\n\n";
                     break;
                 }
             }
@@ -460,7 +490,7 @@ int main(int argc, const char** argv) {
 		cerr << "Error: " << argv[0] << ": " << str << endl;
 		return (1);
 	}
-	catch (Exception& e)	// handle OpenCV exception
+	catch (Exception& e) // handle OpenCV exception
 	{
 		cerr << "Error: " << argv[0] << ": " << e.msg << endl;
 		return (1);
