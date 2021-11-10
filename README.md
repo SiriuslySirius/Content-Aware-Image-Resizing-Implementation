@@ -3,6 +3,7 @@
 </br>
 **Contributors:** Abelson Abueg and Brandon Miranda
 </br>
+## Program Run Instructions
 * After configuring and setting up your OpenCv, build the solution with the executable (.exe) file in “*\CAIRI\x64\release”. 
 
 * To run the program, open Powershell and navigate to the path where “*\CAIRI\x64\release”. Is located.
