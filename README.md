@@ -6,7 +6,7 @@
 **Credit to David Xiao** (https://github.com/davidshower/seam-carving) for the general algorithmic functions needed for Seam Carving.
 </br>
 
-## Preview:
+## Video Preview:
 https://user-images.githubusercontent.com/38868532/141663918-ddeedbaf-c054-4337-a639-814cfbc10206.mp4
 
 ## Our Contributions:
