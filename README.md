@@ -7,7 +7,7 @@
 </br>
 
 ## Our Contributions:
-* Code made compatible with OpenCV version 4.5.4
+* Algorithmic function by David Xiao are made compatible with OpenCV version 4.5.4
 * 2-Directional Seam Carving (Vertical and Horizontal) Implementation vs David Xiao's 1-Directional Seam Carving Implementation
 * Step-by-Step Frame Preview of the Seam Carving Process through a Slider. 
 
