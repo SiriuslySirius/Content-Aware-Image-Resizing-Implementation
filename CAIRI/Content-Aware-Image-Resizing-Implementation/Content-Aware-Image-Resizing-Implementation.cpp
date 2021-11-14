@@ -4,10 +4,10 @@
     Contributors: Abelson Abueg and Brandon Miranda
 
     Credit to David Xiao (https://github.com/davidshower/seam-carving) 
-    for the general algorithmic functions for Seam Carving.
+    for the general algorithmic functions needed for Seam Carving.
 
     Our contribution is in making the program be able to run both vertical and
-    horizontal seam carving  instead of doing one or the other and implimented 
+    horizontal seam carving instead of doing one or the other and implimented 
     a slider to preview every step of the seam carving process.
 
  *****************************************************************************/
