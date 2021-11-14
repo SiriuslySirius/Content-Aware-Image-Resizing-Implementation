@@ -1,7 +1,7 @@
 # Content-Aware-Image-Resizing-Implementation
 **Based on this algorithm:** https://en.wikipedia.org/wiki/Seam_carving
 </br>
-**Main Contributors:** Abelson Abueg and Brandon Miranda
+**Main Contributors:** Abelson Abueg (https://github.com/SiriuslySirius) and Brandon Miranda (https://github.com/sapphireten)
 </br>
 **Credit to David Xiao** (https://github.com/davidshower/seam-carving) for the general algorithmic functions needed for Seam Carving.
 </br>
