@@ -14,7 +14,7 @@ https://user-images.githubusercontent.com/38868532/141663918-ddeedbaf-c054-4337-
 * 2-Directional (Vertical and Horizontal) Seam Carving Implementation vs David Xiao's 1-Directional Seam Carving Implementation
 * Step-by-Step Frame Preview of Seam Carving Process through a Slider. 
 
-## OpenCV Instructions for Windows with Microsoft Visual Studio 2019
+## OpenCV Instructions for Windows with Microsoft Visual Studio 2019:
 We used Microsoft Visual Studio 2019 for working with Windows. To compile our code, you will need to open 'CAIRI.sln' and follow these instruction on how to get OpenCV working on Visual Studio on your Windows machine before building the solution:
 * __Install and Configure OpenCV on Windows 10 and Microsoft Visual 2019:__ https://towardsdatascience.com/install-and-configure-opencv-4-2-0-in-windows-10-vc-d132c52063a1
   * Installing OpenCV
@@ -24,7 +24,7 @@ We used Microsoft Visual Studio 2019 for working with Windows. To compile our co
 
 After you have configured OpenCV in your machine and in Microsoft Visual Studio, you'll then need to build the solution. Again, make sure you are building in x64 Release.
 
-## Instructions for Running the Program on Windows
+## Instructions for Running the Program on Windows:
 * After configuring and setting up OpenCV, build the solution, and you will find executable (.exe) file in “*\CAIRI\x64\release”. 
 * To run the program, open Powershell and navigate to the path: “*\CAIRI\x64\release”.
 * Below are the basic arguments you can use for the program:
