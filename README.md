@@ -6,13 +6,13 @@
 **Credit to David Xiao** (https://github.com/davidshower/seam-carving) for the general algorithmic functions needed for Seam Carving.
 </br>
 
-## Video Preview:
-https://user-images.githubusercontent.com/38868532/141663918-ddeedbaf-c054-4337-a639-814cfbc10206.mp4
-
 ## Our Contributions:
 * Code made compatible with OpenCV version 4.5.4
 * 2-Directional (Vertical and Horizontal) Seam Carving Implementation vs David Xiao's 1-Directional Seam Carving Implementation
-* Step-by-Step Frame Preview of Seam Carving Process through a Slider. 
+* Step-by-Step Frame Preview of the Seam Carving Process through a Slider. 
+
+## Video Preview:
+https://user-images.githubusercontent.com/38868532/141663918-ddeedbaf-c054-4337-a639-814cfbc10206.mp4
 
 ## OpenCV Instructions for Windows with Microsoft Visual Studio 2019:
 We used Microsoft Visual Studio 2019 for working with Windows. To compile our code, you will need to open 'CAIRI.sln' and follow these instruction on how to get OpenCV working on Visual Studio on your Windows machine before building the solution:
