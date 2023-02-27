@@ -15,6 +15,7 @@
 #include <iostream>
 #include <iomanip>
 #include <conio.h>
+#include <filesystem>
 #include <vector>
 #include <assert.h>
 #include <opencv2/core.hpp>
@@ -351,7 +352,7 @@ int main(int argc, const char** argv) {
     try 
     {
 		CommandLineParser parser(argc, argv, keys);
-		parser.about("Content Aware Image Resizing Implementation v1.0");
+		parser.about("Content Aware Image Resizing Implementation v1.1");
 		
 
 		if (parser.has("help"))
@@ -363,6 +364,9 @@ int main(int argc, const char** argv) {
         resize_cols = parser.get<int>(0);
 		resize_rows = parser.get<int>(1);
 		string image_path = parser.get<string>(2);
+        //string output_path = parser.get<string>(3);
+        //string output = output_path + "\output.png";
+
 
 		Mat img = imread(image_path);
 		assert(!img.empty());
@@ -459,6 +463,8 @@ int main(int argc, const char** argv) {
                     seam_prev_vect.push_back(reduce_img_path);
                 }
             }
+
+            imwrite("output.png", red_img_vect[max_vect_size - 1]);
 
             // Window for slider.
             namedWindow("Frame Slider", WINDOW_AUTOSIZE);
